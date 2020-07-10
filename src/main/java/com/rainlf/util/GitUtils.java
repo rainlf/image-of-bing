@@ -12,6 +12,6 @@ public class GitUtils {
     public static void commit() {
         ProcessBuilder processBuilder = new ProcessBuilder("git ci -am 'update'");
         Process process = processBuilder.start();
-
+        System.out.println(1);
     }
 }
