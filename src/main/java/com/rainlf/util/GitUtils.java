@@ -27,6 +27,7 @@ public class GitUtils {
         while ((line = bufferedReader.readLine()) != null) {
             log.info("[Git] {}", line);
         }
+        log.info("eeee");
         process.destroy();
         log.info("[Git] end commit");
     }
