@@ -33,8 +33,12 @@ public class SpiderServiceImpl implements SpiderService {
 
     @Override
     public void downloadOneDay(String targetDir) {
+        long s = System.currentTimeMillis();
         downloadBing(getBingInfo(day1Url), targetDir);
+        log.info("rain: {}", System.currentTimeMillis() - s);
+        s = System.currentTimeMillis();
         GitUtils.commit();
+        log.info("rain2: {}", System.currentTimeMillis() - s);
     }
 
     @Override
