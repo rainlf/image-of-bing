@@ -36,14 +36,22 @@ public class SpiderServiceImpl implements SpiderService {
     @Override
     public void downloadOneDay() {
         log.info("开始下载");
-        downloadBing(getBingInfo(day1Url));
+        boolean download = downloadBing(getBingInfo(day1Url));
         log.info("下载结束");
-        GitUtils.commit();
+        if (download) {
+            GitUtils.commit();
+        }
     }
 
     @Override
     public void downloadEightDay() {
-        downloadBing(getBingInfo(day8Url));
+        log.info("开始下载-8天数据");
+        boolean download = downloadBing(getBingInfo(day1Url));
+        log.info("下载结束-8天数据");
+        GitUtils.commit();
+        if (download) {
+            GitUtils.commit();
+        }
     }
 
     private BingInfo getBingInfo(String url) {
@@ -56,29 +64,31 @@ public class SpiderServiceImpl implements SpiderService {
         return bingInfo;
     }
 
-    private void downloadBing(BingInfo bingInfo) {
+    private boolean downloadBing(BingInfo bingInfo) {
         List<DownloadInfo> downloadInfoList = bingInfo.getImages()
                 .stream()
                 .map(DownloadInfo::new)
                 .collect(Collectors.toList());
 
+        boolean download = false;
         for (DownloadInfo info : downloadInfoList) {
             if (info.getImageName() != null) {
-                innerDownload(targetDir + imageDir + info.getImageName(), info.getImageUrl());
+                download = download || innerDownload(targetDir + imageDir + info.getImageName(), info.getImageUrl());
             }
             if (info.getMp4Name() != null) {
-                innerDownload(targetDir + videoDir + info.getMp4Name(), info.getMp4Url());
+                download = download || innerDownload(targetDir + videoDir + info.getMp4Name(), info.getMp4Url());
             }
             if (info.getMp4HdName() != null) {
-                innerDownload(targetDir + videoHdDir + info.getMp4HdName(), info.getMp4HdUrl());
+                download = download || innerDownload(targetDir + videoHdDir + info.getMp4HdName(), info.getMp4HdUrl());
             }
             if (info.getMp4MobileName() != null) {
-                innerDownload(targetDir + videoMobileDir + info.getMp4MobileName(), info.getMp4MobileUrl());
+                download = download || innerDownload(targetDir + videoMobileDir + info.getMp4MobileName(), info.getMp4MobileUrl());
             }
         }
+        return download;
     }
 
-    private void innerDownload(String targetPath, String url) {
+    private boolean innerDownload(String targetPath, String url) {
         File file = new File(targetPath);
 
         if (!file.getParentFile().exists()) {
@@ -96,10 +106,12 @@ public class SpiderServiceImpl implements SpiderService {
                 }
 
             } catch (IOException e) {
-               log.error("Download Fail: {}", targetPath, e);
+                log.error("Download Fail: {}", targetPath, e);
             }
+            return true;
         } else {
             log.info("File exists, skip download...");
+            return false;
         }
     }
 }
