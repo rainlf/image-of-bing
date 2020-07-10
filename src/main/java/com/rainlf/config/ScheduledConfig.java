@@ -18,7 +18,7 @@ public class ScheduledConfig {
     /**
      * 秒 分 时 日 月 星期
      */
-    @Scheduled(cron = "*/2 * * * * *")
+    @Scheduled(cron = "*/30 * * * * *")
     public void spider1Day() {
         spiderService.downloadOneDay(targetDir);
 //        spiderService.downloadEightDay(targetDir);
