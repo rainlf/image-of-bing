@@ -3,6 +3,7 @@ package com.rainlf.service.impl;
 import com.rainlf.domain.BingInfo;
 import com.rainlf.domain.DownloadInfo;
 import com.rainlf.service.SpiderService;
+import com.rainlf.util.GitUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,7 @@ public class SpiderServiceImpl implements SpiderService {
     @Override
     public void downloadOneDay(String targetDir) {
         downloadBing(getBingInfo(day1Url), targetDir);
+        GitUtils.commit();
     }
 
     @Override

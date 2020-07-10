@@ -10,8 +10,11 @@ public class GitUtils {
 
     @SneakyThrows
     public static void commit() {
-        ProcessBuilder processBuilder = new ProcessBuilder("git ci -am 'update'");
-        Process process = processBuilder.start();
-        System.out.println(1);
+        ProcessBuilder pb1 = new ProcessBuilder("git", "commit", "-am", "update");
+        Process process = pb1.start();
+        if (process.exitValue() == 0) {
+            ProcessBuilder pb2 = new ProcessBuilder("git push");
+            pb2.start();
+        }
     }
 }
