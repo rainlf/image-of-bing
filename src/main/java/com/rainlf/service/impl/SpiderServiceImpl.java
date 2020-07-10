@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 @Service
 public class SpiderServiceImpl implements SpiderService {
 
+    public static String targetDir = "";
+
     private final String imageDir = "/store/image/";
     private final String videoDir = "/store/video/";
     private final String videoHdDir = "/store/video_hd/";
@@ -32,16 +34,16 @@ public class SpiderServiceImpl implements SpiderService {
     private RestTemplate restTemplate;
 
     @Override
-    public void downloadOneDay(String targetDir) {
+    public void downloadOneDay() {
         log.info("开始下载");
-        downloadBing(getBingInfo(day1Url), targetDir);
+        downloadBing(getBingInfo(day1Url));
         log.info("下载结束");
         GitUtils.commit();
     }
 
     @Override
-    public void downloadEightDay(String targetDir) {
-        downloadBing(getBingInfo(day8Url), targetDir);
+    public void downloadEightDay() {
+        downloadBing(getBingInfo(day8Url));
     }
 
     private BingInfo getBingInfo(String url) {
@@ -54,7 +56,7 @@ public class SpiderServiceImpl implements SpiderService {
         return bingInfo;
     }
 
-    private void downloadBing(BingInfo bingInfo, String targetDir) {
+    private void downloadBing(BingInfo bingInfo) {
         List<DownloadInfo> downloadInfoList = bingInfo.getImages()
                 .stream()
                 .map(DownloadInfo::new)

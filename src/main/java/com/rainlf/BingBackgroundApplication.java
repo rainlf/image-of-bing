@@ -1,6 +1,10 @@
 package com.rainlf;
 
 import com.rainlf.config.ScheduledConfig;
+import com.rainlf.service.SpiderService;
+import com.rainlf.service.impl.SpiderServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date : 2020/7/10 13:37
  */
 @SpringBootApplication
-public class BingBackgroundApplication {
+public class BingBackgroundApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         parseArgs(args);
@@ -18,10 +22,17 @@ public class BingBackgroundApplication {
 
     private static void parseArgs(String[] args) {
         if (args.length == 0) {
-            ScheduledConfig.targetDir = "./";
+            SpiderServiceImpl.targetDir = "./";
         } else {
-            ScheduledConfig.targetDir = args[0];
+            SpiderServiceImpl.targetDir = args[0];
         }
     }
 
+    @Autowired
+    private SpiderService spiderService;
+
+    @Override
+    public void run(String... args) throws Exception {
+        spiderService.downloadOneDay();
+    }
 }

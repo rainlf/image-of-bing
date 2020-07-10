@@ -10,8 +10,6 @@ import org.springframework.stereotype.Component;
 @EnableScheduling
 public class ScheduledConfig {
 
-    public static String targetDir = "";
-
     @Autowired
     private SpiderService spiderService;
 
@@ -20,7 +18,6 @@ public class ScheduledConfig {
      */
     @Scheduled(cron = "0 0 2 * * *")
     public void spider1Day() {
-//        spiderService.downloadOneDay(targetDir);
-        spiderService.downloadEightDay(targetDir);
+        spiderService.downloadOneDay();
     }
 }

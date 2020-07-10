@@ -6,7 +6,7 @@ package com.rainlf.service;
  */
 public interface SpiderService {
 
-    void downloadOneDay(String targetDir);
+    void downloadOneDay();
 
-    void downloadEightDay(String targetDir);
+    void downloadEightDay();
 }
