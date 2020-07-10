@@ -1,6 +1,6 @@
 # Bing Background
 
-每日2点下载`cn.bing.com`背景资源
+每日2点下载 [https://bing.com](https://bing.com) 背景资源
 
 ## 构建方式
 ```$xslt
