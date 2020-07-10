@@ -16,7 +16,7 @@ public class GitUtils {
 
     @SneakyThrows
     public static void commit() {
-        ProcessBuilder processBuilder = new ProcessBuilder("git", "commit", "-am", "update", "&&", "git", "push");
+        ProcessBuilder processBuilder = new ProcessBuilder("git", "add", ".");
         processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
 
