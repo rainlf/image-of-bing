@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,18 +72,19 @@ public class SpiderServiceImpl implements SpiderService {
                 .collect(Collectors.toList());
 
         boolean download = false;
+        LocalDate today = LocalDate.now();
         for (DownloadInfo info : downloadInfoList) {
-            if (info.getImageName() != null) {
-                download = download || innerDownload(targetDir + imageDir + info.getImageName(), info.getImageUrl());
+            if (info.getImageUrl() != null) {
+                download = download || innerDownload(targetDir + imageDir + today + ".jpg", info.getImageUrl());
             }
-            if (info.getMp4Name() != null) {
-                download = download || innerDownload(targetDir + videoDir + info.getMp4Name(), info.getMp4Url());
+            if (info.getMp4Url() != null) {
+                download = download || innerDownload(targetDir + videoDir + today + ".mp4", info.getMp4Url());
             }
-            if (info.getMp4HdName() != null) {
-                download = download || innerDownload(targetDir + videoHdDir + info.getMp4HdName(), info.getMp4HdUrl());
+            if (info.getMp4HdUrl() != null) {
+                download = download || innerDownload(targetDir + videoHdDir + today + "_hd.mp4", info.getMp4HdUrl());
             }
-            if (info.getMp4MobileName() != null) {
-                download = download || innerDownload(targetDir + videoMobileDir + info.getMp4MobileName(), info.getMp4MobileUrl());
+            if (info.getMp4MobileUrl() != null) {
+                download = download || innerDownload(targetDir + videoMobileDir + today + "_m.mp4", info.getMp4MobileUrl());
             }
         }
         return download;
