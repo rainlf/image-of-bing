@@ -16,6 +16,7 @@ public class GitUtils {
 
     @SneakyThrows
     public static void commit() {
+        log.info("[Git] start commit");
         ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "git add . && git commit -m \uD83C\uDF56 && git push");
         processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
@@ -26,7 +27,7 @@ public class GitUtils {
         while ((line = bufferedReader.readLine()) != null) {
             log.info("[Git] {}", line);
         }
-
         process.destroy();
+        log.info("[Git] end commit");
     }
 }
