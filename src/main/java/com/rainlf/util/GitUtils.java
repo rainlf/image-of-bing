@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 @Slf4j
 public class GitUtils {
 
-
     public static void commit() {
         log.info("[Git] start commit");
         ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "git add . && git commit -m \uD83C\uDF56 && git push");
@@ -38,10 +37,12 @@ public class GitUtils {
             }).start();
             process.waitFor();
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            log.error("git commit error", e);
         } finally {
             log.info("[Git] end commit");
-            process.destroy();
+            if (process != null) {
+                process.destroy();
+            }
         }
     }
 
