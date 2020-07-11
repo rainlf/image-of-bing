@@ -37,7 +37,7 @@ public class GitUtils {
             }).start();
             process.waitFor();
         } catch (IOException | InterruptedException e) {
-            log.error("git commit error", e);
+            log.error("[Git] commit error", e);
         } finally {
             log.info("[Git] end commit");
             if (process != null) {
