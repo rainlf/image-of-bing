@@ -17,7 +17,13 @@ public class GitUtils {
     public static void commit() {
         log.info("[Git] start commit");
         String message = System.getProperty("os.name").toLowerCase().contains("win") ? "update" : "\uD83C\uDF56";
-        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "git add . && git commit -m " + message + " && git pull --rebase && git push");
+        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c",
+                "git config user.name 'rain' && " +
+                "git config user.email 'iheyu22@gmail.com' && " +
+                "git add . && " +
+                "git commit -m " + message + " && " +
+                "git pull --rebase && " +
+                "git push");
         processBuilder.redirectErrorStream(true);
         Process process = null;
         try {
