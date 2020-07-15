@@ -33,6 +33,6 @@ public class BingBackgroundApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        spiderService.downloadOneDay();
+        spiderService.downloadEightDay();
     }
 }

@@ -39,7 +39,7 @@ public class SpiderServiceImpl implements SpiderService {
         log.info("开始下载");
         boolean download = downloadBing(getBingInfo(day1Url));
         log.info("下载结束");
-        if (true) {
+        if (download) {
             GitUtils.commit();
         }
     }

@@ -1,6 +1,5 @@
 package com.rainlf.util;
 
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
@@ -17,7 +16,8 @@ public class GitUtils {
 
     public static void commit() {
         log.info("[Git] start commit");
-        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "git add . && git commit -m \uD83C\uDF56 && git pull --rebase && git push");
+        String message = System.getProperty("os.name").toLowerCase().contains("win") ? "update" : "\uD83C\uDF56";
+        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "git add . && git commit -m " + message + " && git pull --rebase && git push");
         processBuilder.redirectErrorStream(true);
         Process process = null;
         try {
