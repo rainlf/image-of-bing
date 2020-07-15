@@ -17,7 +17,7 @@ public class GitUtils {
 
     public static void commit() {
         log.info("[Git] start commit");
-        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "git add . && git commit -m \uD83C\uDF56 && git push");
+        ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", "git add . && git commit -m \uD83C\uDF56 && git pull --rebase && git push");
         processBuilder.redirectErrorStream(true);
         Process process = null;
         try {
