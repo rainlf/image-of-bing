@@ -23,7 +23,7 @@ public class GitUtils {
                 "git add . && " +
                 "git commit -m " + message + " && " +
                 "git pull --rebase && " +
-                "git push");
+                "git push origin master:master");
         processBuilder.redirectErrorStream(true);
         Process process = null;
         try {

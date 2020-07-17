@@ -15,17 +15,17 @@ public class DownloadInfo {
     public String mp4HdUrl;
     public String mp4MobileUrl;
 
-    private static String httpPrefix = "http:";
-    private static String httpsPrefix = "https://cn.bing.com";
+    private static String videoPrefix = "https:";
+    private static String imagePrefix = "https://cn.bing.com";
 
     public DownloadInfo(BingInfo.Image image) {
         if (image.getVid() == null) {
-            imageUrl = httpsPrefix + image.getUrl();
+            imageUrl = imagePrefix + image.getUrl();
         } else {
-            imageUrl = httpPrefix + image.getVid().getImage();
-            mp4Url = httpPrefix + image.getVid().getSources().get(0).get(2);
-            mp4HdUrl = httpPrefix + image.getVid().getSources().get(1).get(2);
-            mp4MobileUrl = httpPrefix + image.getVid().getSources().get(2).get(2);
+            imageUrl = videoPrefix + image.getVid().getImage();
+            mp4Url = videoPrefix + image.getVid().getSources().get(0).get(2);
+            mp4HdUrl = videoPrefix + image.getVid().getSources().get(1).get(2);
+            mp4MobileUrl = videoPrefix + image.getVid().getSources().get(2).get(2);
         }
     }
 

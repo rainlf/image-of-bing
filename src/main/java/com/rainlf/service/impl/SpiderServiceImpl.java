@@ -47,7 +47,7 @@ public class SpiderServiceImpl implements SpiderService {
     @Override
     public void downloadEightDay() {
         log.info("开始下载-8天数据");
-        boolean download = downloadBing(getBingInfo(day1Url));
+        boolean download = downloadBing(getBingInfo(day8Url));
         log.info("下载结束-8天数据");
         GitUtils.commit();
         if (download) {
@@ -91,6 +91,7 @@ public class SpiderServiceImpl implements SpiderService {
     }
 
     private boolean innerDownload(String targetPath, String url) {
+        log.info("Downloading: {} --> {}", url, targetPath);
         File file = new File(targetPath);
 
         if (!file.getParentFile().exists()) {
@@ -98,17 +99,30 @@ public class SpiderServiceImpl implements SpiderService {
         }
 
         if (!file.exists()) {
-            byte[] response = restTemplate.getForObject(url, byte[].class);
-            try (InputStream in = new ByteArrayInputStream(response);
-                 OutputStream out = new FileOutputStream(file)) {
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                byte[] response = restTemplate.getForObject(url, byte[].class);
+                in = new ByteArrayInputStream(response);
+                out = new FileOutputStream(file);
+
                 int len;
                 byte[] buf = new byte[1024];
                 while ((len = in.read(buf, 0, 1024)) != -1) {
                     out.write(buf, 0, len);
                 }
-
             } catch (IOException e) {
                 log.error("Download Fail: {}", targetPath, e);
+            } finally {
+                try {
+                    if (in != null) {
+                        in.close();
+                    }
+                    if (out != null) {
+                        out.close();
+                    }
+                } catch (IOException e) {
+                }
             }
             return true;
         } else {
