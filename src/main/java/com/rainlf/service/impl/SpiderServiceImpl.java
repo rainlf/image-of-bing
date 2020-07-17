@@ -39,9 +39,6 @@ public class SpiderServiceImpl implements SpiderService {
         log.info("开始下载");
         boolean download = downloadBing(getBingInfo(day1Url));
         log.info("下载结束");
-        if (download) {
-            GitUtils.commit();
-        }
     }
 
     @Override
@@ -49,10 +46,6 @@ public class SpiderServiceImpl implements SpiderService {
         log.info("开始下载-8天数据");
         boolean download = downloadBing(getBingInfo(day8Url));
         log.info("下载结束-8天数据");
-        GitUtils.commit();
-        if (download) {
-            GitUtils.commit();
-        }
     }
 
     private BingInfo getBingInfo(String url) {
