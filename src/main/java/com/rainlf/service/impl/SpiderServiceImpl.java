@@ -91,7 +91,6 @@ public class SpiderServiceImpl implements SpiderService {
     }
 
     private boolean innerDownload(String targetPath, String url) {
-        log.info("Downloading: {} --> {}", url, targetPath);
         File file = new File(targetPath);
 
         if (!file.getParentFile().exists()) {
@@ -102,6 +101,7 @@ public class SpiderServiceImpl implements SpiderService {
             InputStream in = null;
             OutputStream out = null;
             try {
+                log.info("Downloading: {} --> {}", url, targetPath);
                 byte[] response = restTemplate.getForObject(url, byte[].class);
                 in = new ByteArrayInputStream(response);
                 out = new FileOutputStream(file);
@@ -111,6 +111,7 @@ public class SpiderServiceImpl implements SpiderService {
                 while ((len = in.read(buf, 0, 1024)) != -1) {
                     out.write(buf, 0, len);
                 }
+                log.info("Download success...");
             } catch (IOException e) {
                 log.error("Download Fail: {}", targetPath, e);
             } finally {
