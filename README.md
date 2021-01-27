@@ -1,4 +1,4 @@
-# Bing Background
+# Bing Image Store
 
 每日2点下载 [https://bing.com](https://bing.com) 站点背景图片
 
@@ -9,5 +9,5 @@ mvn clean package -DskipTests
 
 ## 运行方式
 ```$xslt
-java -jar bing-background-store.jar <target_dir>
+nohup java -jar bing-images-store.jar <target_dir> > /tmp/bing-images-store.log 2>&1 &
 ```

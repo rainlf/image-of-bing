@@ -37,14 +37,14 @@ public class SpiderServiceImpl implements SpiderService {
     @Override
     public void downloadOneDay() {
         log.info("开始下载");
-        boolean download = downloadBing(getBingInfo(day1Url));
+        downloadBing(getBingInfo(day1Url));
         log.info("下载结束");
     }
 
     @Override
     public void downloadEightDay() {
         log.info("开始下载-8天数据");
-        boolean download = downloadBing(getBingInfo(day8Url));
+        downloadBing(getBingInfo(day8Url));
         log.info("下载结束-8天数据");
     }
 
@@ -58,69 +58,58 @@ public class SpiderServiceImpl implements SpiderService {
         return bingInfo;
     }
 
-    private boolean downloadBing(BingInfo bingInfo) {
+    private void downloadBing(BingInfo bingInfo) {
         List<DownloadInfo> downloadInfoList = bingInfo.getImages()
                 .stream()
                 .map(DownloadInfo::new)
                 .collect(Collectors.toList());
 
-        boolean download = false;
         LocalDate today = LocalDate.now();
-        for (DownloadInfo info : downloadInfoList) {
+        for (int i = 0; i < downloadInfoList.size(); i++) {
+            DownloadInfo info = downloadInfoList.get(i);
+            LocalDate date = today.minusDays(i);
             if (info.getImageUrl() != null) {
-                download = download || innerDownload(targetDir + imageDir + today + ".jpg", info.getImageUrl());
+                innerDownload(targetDir + imageDir + date + ".jpg", info.getImageUrl());
             }
             if (info.getMp4Url() != null) {
-                download = download || innerDownload(targetDir + videoDir + today + ".mp4", info.getMp4Url());
+                innerDownload(targetDir + videoDir + date + ".mp4", info.getMp4Url());
             }
             if (info.getMp4HdUrl() != null) {
-                download = download || innerDownload(targetDir + videoHdDir + today + "_hd.mp4", info.getMp4HdUrl());
+                innerDownload(targetDir + videoHdDir + date + "_hd.mp4", info.getMp4HdUrl());
             }
             if (info.getMp4MobileUrl() != null) {
-                download = download || innerDownload(targetDir + videoMobileDir + today + "_m.mp4", info.getMp4MobileUrl());
+                innerDownload(targetDir + videoMobileDir + date + "_m.mp4", info.getMp4MobileUrl());
             }
         }
-        return download;
     }
 
-    private boolean innerDownload(String targetPath, String url) {
-        File file = new File(targetPath);
-
+    private boolean innerDownload(String filePath, String url) {
+        File file = new File(filePath);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
 
         if (!file.exists()) {
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                log.info("Downloading: {} --> {}", url, targetPath);
-                byte[] response = restTemplate.getForObject(url, byte[].class);
-                in = new ByteArrayInputStream(response);
-                out = new FileOutputStream(file);
+            byte[] response = restTemplate.getForObject(url, byte[].class);
+            if (response == null || response.length == 0) {
+                log.error("Access {} failed", url);
+                return false;
+            }
 
+            try (InputStream in = new ByteArrayInputStream(response);
+                 OutputStream out = new FileOutputStream(file)) {
                 int len;
                 byte[] buf = new byte[1024];
                 while ((len = in.read(buf, 0, 1024)) != -1) {
                     out.write(buf, 0, len);
                 }
-                log.info("Download success...");
+                log.info("Download success: {} <-- {}", filePath, url);
             } catch (IOException e) {
-                log.error("Download Fail: {}", targetPath, e);
-            } finally {
-                try {
-                    if (in != null) {
-                        in.close();
-                    }
-                    if (out != null) {
-                        out.close();
-                    }
-                } catch (IOException e) {
-                }
+                log.error("Download failed: {} <-- {}", filePath, url, e);
             }
             return true;
         } else {
-            log.info("File exists, skip download...");
+            log.info("File exists, skip download: {} <-- {}", filePath, url);
             return false;
         }
     }
