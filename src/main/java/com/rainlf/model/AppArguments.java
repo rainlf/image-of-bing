@@ -9,7 +9,9 @@ import lombok.Data;
 @Data
 public class AppArguments {
     public static String targetDir = "./store";
-    public static String targetScript = "./auto_commit.bat";
+    public static String linuxScript = "./auto_commit.sh";
+    public static String windowsScript = "./auto_commit.bat";
+    public static String targetScript = windowsScript;
     public static String imageDir = "/image/";
     public static String videoDir = "/video/";
     public static String videoHdDir = "/video_hd/";

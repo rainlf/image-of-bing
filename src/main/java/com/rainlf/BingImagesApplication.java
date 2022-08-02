@@ -24,6 +24,8 @@ public class BingImagesApplication implements CommandLineRunner {
             AppArguments.targetDir = args[0];
         }
         if (args.length > 2) {
+            String os = System.getProperty("os.name");
+            System.out.println("os: " + os);
             AppArguments.targetScript = args[1];
         }
     }
