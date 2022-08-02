@@ -2,7 +2,8 @@
 
 echo "[sync] start"
 cd $(dirname "$0")
-git ci -am 'update'
+git add .
+git ci -m 'update'
 git pull --rebase
 git push origin
 echo "[sync] done"
