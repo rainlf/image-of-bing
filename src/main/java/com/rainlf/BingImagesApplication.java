@@ -20,9 +20,10 @@ public class BingImagesApplication implements CommandLineRunner {
     }
 
     private static void parseArgs(String[] args) {
-        String os = System.getProperty("os.name");
-        System.out.println("os: " + os);
-        
+        AppArguments.targetScript = System.getProperty("os.name").contains("Windows")
+                ? AppArguments.windowsScript
+                : AppArguments.linuxScript;
+
         if (args.length > 1) {
             AppArguments.targetDir = args[0];
         }
