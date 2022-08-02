@@ -9,4 +9,6 @@ public interface ImageService {
     void download1Day();
 
     void download8Day();
+
+    void runAutoCommit();
 }

@@ -1,8 +1,10 @@
 package com.rainlf.service.impl;
 
+import com.rainlf.model.AppArguments;
 import com.rainlf.model.BingResponse;
 import com.rainlf.model.UrlInfo;
 import com.rainlf.service.ImageService;
+import jdk.internal.util.xml.impl.Input;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.rainlf.model.AppArguments.*;
+
 /**
  * @author : rain
  * @date : 2020/7/10 13:55
@@ -21,16 +25,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ImageServiceImpl implements ImageService {
-
-    public static String targetDir = "./store/";
-
-    private final String imageDir = "/image/";
-    private final String videoDir = "/video/";
-    private final String videoHdDir = "/video_hd/";
-    private final String videoMobileDir = "/video_mobile";
-    private final String day1Url = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&video=1";
-    private final String day8Url = "https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&video=1";
-
     @Autowired
     private RestTemplate restTemplate;
 
@@ -82,7 +76,7 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    private boolean download(String filePath, String url) {
+    private void download(String filePath, String url) {
         File file = new File(filePath);
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
@@ -92,7 +86,7 @@ public class ImageServiceImpl implements ImageService {
             byte[] response = restTemplate.getForObject(url, byte[].class);
             if (response == null || response.length == 0) {
                 log.error("Access {} failed", url);
-                return false;
+                return;
             }
 
             try (
@@ -108,10 +102,49 @@ public class ImageServiceImpl implements ImageService {
             } catch (IOException e) {
                 log.error("Download failed: {} <-- {}", filePath, url, e);
             }
-            return true;
         } else {
             log.info("File exists, skip download: {} <-- {}", filePath, url);
-            return false;
+        }
+    }
+
+    @Override
+    public void runAutoCommit() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        processBuilder.command(targetScript);
+        try {
+            Process process = processBuilder.start();
+            InputStream processStdout = process.getInputStream();
+            InputStream processStderr = process.getErrorStream();
+            new Thread(() -> logProcessOutput(processStdout, 1)).start();
+            new Thread(() -> logProcessOutput(processStderr, 2)).start();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * print process output into log
+     *
+     * @param inputStream stdout or stderr
+     * @param logLevel    1: info, 2: error
+     */
+    private void logProcessOutput(InputStream inputStream, int logLevel) {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        String line;
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                printLog(line, logLevel);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void printLog(String content, int level) {
+        if (level == 1) {
+            log.info(content);
+        } else {
+            log.error(content);
         }
     }
 }

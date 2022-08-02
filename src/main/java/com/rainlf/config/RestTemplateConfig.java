@@ -18,7 +18,6 @@ import java.util.List;
  */
 @Configuration
 public class RestTemplateConfig {
-
     @Bean
     public RestTemplate restTemplate() {
         RestTemplate restTemplate = new RestTemplate();

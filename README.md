@@ -9,5 +9,5 @@ mvn clean package -DskipTests
 
 ## 运行方式
 ```$xslt
-nohup java -jar bing-images-store.jar <target_dir> > /tmp/bing-images-store.log 2>&1 &
+nohup java -jar bing-images.jar <target_dir> > /tmp/bing-images.log 2>&1 &
 ```
