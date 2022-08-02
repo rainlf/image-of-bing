@@ -16,8 +16,9 @@ public class ScheduledJob {
     /**
      * 秒 分 时 日 月 星期
      */
-    @Scheduled(cron = "0 0 2 * * *")
+    @Scheduled(cron = "0 0 4 * * *")
     public void spider1Day() {
         imageService.download1Day();
+        imageService.runAutoCommit();
     }
 }

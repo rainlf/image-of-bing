@@ -9,7 +9,6 @@ import java.util.List;
  */
 @Data
 public class BingResponse {
-
     private List<Image> images;
 
     @Data

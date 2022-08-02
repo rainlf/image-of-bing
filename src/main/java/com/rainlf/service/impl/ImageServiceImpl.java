@@ -1,10 +1,9 @@
 package com.rainlf.service.impl;
 
-import com.rainlf.model.AppArguments;
+
 import com.rainlf.model.BingResponse;
 import com.rainlf.model.UrlInfo;
 import com.rainlf.service.ImageService;
-import jdk.internal.util.xml.impl.Input;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,16 +29,16 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void download1Day() {
-        log.info("开始下载");
+        log.info("[Download 1 day] start");
         download(getBingResponse(day1Url));
-        log.info("下载结束");
+        log.info("[Download 1 day] done");
     }
 
     @Override
     public void download8Day() {
-        log.info("开始下载-8天数据");
+        log.info("[Download 8 day] start");
         download(getBingResponse(day8Url));
-        log.info("下载结束-8天数据");
+        log.info("[Download 8 day] done");
     }
 
     private BingResponse getBingResponse(String url) {
