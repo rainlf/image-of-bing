@@ -1,7 +1,7 @@
 package com.rainlf;
 
-import com.rainlf.service.SpiderService;
-import com.rainlf.service.impl.SpiderServiceImpl;
+import com.rainlf.service.ImageService;
+import com.rainlf.service.impl.ImageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,17 +21,17 @@ public class BingImagesStoreApplication implements CommandLineRunner {
 
     private static void parseArgs(String[] args) {
         if (args.length == 0) {
-            SpiderServiceImpl.targetDir = "./";
+            ImageServiceImpl.targetDir = "./store";
         } else {
-            SpiderServiceImpl.targetDir = args[0];
+            ImageServiceImpl.targetDir = args[0];
         }
     }
 
     @Autowired
-    private SpiderService spiderService;
+    private ImageService imageService;
 
     @Override
     public void run(String... args) throws Exception {
-        spiderService.downloadEightDay();
+        imageService.download8Day();
     }
 }
