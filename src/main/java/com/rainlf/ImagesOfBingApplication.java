@@ -12,11 +12,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date : 2020/7/10 13:37
  */
 @SpringBootApplication
-public class BingImagesApplication implements CommandLineRunner {
+public class ImagesOfBingApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         parseArgs(args);
-        SpringApplication.run(BingImagesApplication.class, args);
+        SpringApplication.run(ImagesOfBingApplication.class, args);
     }
 
     private static void parseArgs(String[] args) {
