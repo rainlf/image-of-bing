@@ -1,6 +1,6 @@
-@echo off
-echo "[sync] start"
-cd %~dp0
+#! /bin/bash
+
+echo "[sync] start $(pwd)"
 git add .
 git ci -m 'update'
 git pull --rebase

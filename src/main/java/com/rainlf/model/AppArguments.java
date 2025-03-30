@@ -11,6 +11,7 @@ public class AppArguments {
     public static String targetDir = "./data";
     public static String linuxScript = "./auto_commit.sh";
     public static String windowsScript = "./auto_commit.bat";
+    public static String macScript = "./auto_commit_mac.sh";
     public static String targetScript = windowsScript;
     public static String imageDir = "/image/";
     public static String videoDir = "/video/";
